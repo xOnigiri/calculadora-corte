@@ -117,6 +117,15 @@ select:focus {
 
 .campo small { color: var(--texto-suave); font-size: 0.82rem; }
 
+/* Cada campo usa las filas de la grilla de .campos (etiqueta / casilla / ayuda):
+   así las casillas de una misma fila quedan alineadas aunque una etiqueta ocupe dos líneas */
+.campo {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+}
+.campo label { align-self: end; }
+
 /* Selector torno / fresadora como dos botones grandes */
 .selector-maquina {
   display: grid;
