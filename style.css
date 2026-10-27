@@ -50,6 +50,7 @@ main {
   display: grid;
   gap: var(--espacio);
 }
+main > * { min-width: 0; }
 
 /* ===== Cabecera y pie ===== */
 .cabecera {
@@ -80,6 +81,7 @@ main {
 
 /* ===== Formulario ===== */
 fieldset {
+  min-width: 0;                /* sin esto el fieldset no se encoge y desborda en celular */
   border: none;
   margin: 0 0 12px;
   padding: 0;
@@ -138,7 +140,7 @@ select:focus {
 
 .campos {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 12px;
 }
 
@@ -151,7 +153,7 @@ body[data-maquina="torno"] .solo-fresadora { display: none; }
 .lista-resultados {
   margin: 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 .resultado {
@@ -174,6 +176,7 @@ body[data-maquina="torno"] .solo-fresadora { display: none; }
 }
 .resultado.destacado dd { font-size: 2.2rem; }
 
+.resultado.ancho-completo,
 .resultado.codigo-g { grid-column: 1 / -1; }
 .codigo-g code {
   display: inline-block;
@@ -209,7 +212,7 @@ body[data-maquina="torno"] .solo-fresadora { display: none; }
 }
 
 /* ===== Celular angosto: una sola columna ===== */
-@media (max-width: 420px) {
+@media (max-width: 380px) {
   .campos,
   .lista-resultados { grid-template-columns: 1fr; }
 }
