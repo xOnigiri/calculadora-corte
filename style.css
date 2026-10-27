@@ -1,0 +1,225 @@
+/* ===== Colores y medidas base (se cambian en un solo lugar) ===== */
+:root {
+  --fondo: #eef1f4;
+  --tarjeta: #ffffff;
+  --texto: #1d2329;
+  --texto-suave: #5b6670;
+  --borde: #cfd6dd;
+  --acento: #d9601a;        /* naranja "viruta caliente" */
+  --acento-suave: #fde9dc;
+  --aviso: #fff4cc;
+  --aviso-borde: #e0b400;
+  --error: #b3261e;
+  --radio: 10px;
+  --espacio: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #14181c;
+    --tarjeta: #1e252b;
+    --texto: #e8ecef;
+    --texto-suave: #9aa6b0;
+    --borde: #36414a;
+    --acento: #ff8a3d;
+    --acento-suave: #3a2a1f;
+    --aviso: #3a3214;
+    --aviso-borde: #c9a200;
+    --error: #ff8a80;
+  }
+}
+
+/* ===== Base ===== */
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 var(--espacio) var(--espacio);
+  display: grid;
+  gap: var(--espacio);
+}
+
+/* ===== Cabecera y pie ===== */
+.cabecera {
+  background: #2b3238;
+  color: #fff;
+  padding: 20px var(--espacio);
+  margin-bottom: var(--espacio);
+  border-bottom: 4px solid var(--acento);
+}
+.cabecera h1 { margin: 0; font-size: 1.35rem; }
+.cabecera p { margin: 4px 0 0; color: #c3ccd3; font-size: 0.95rem; }
+
+.pie {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 var(--espacio) 24px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+/* ===== Tarjetas ===== */
+.tarjeta {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: var(--espacio);
+}
+
+/* ===== Formulario ===== */
+fieldset {
+  border: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+legend {
+  font-weight: 700;
+  color: var(--acento);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+label { display: block; font-size: 0.92rem; margin: 8px 0 4px; }
+
+input[type="number"],
+select {
+  width: 100%;
+  font: inherit;
+  font-size: 1.1rem;           /* 16px o más: el celular no hace zoom al tocar */
+  padding: 10px 12px;
+  min-height: 46px;            /* fácil de tocar con el dedo (incluso con guantes) */
+  color: var(--texto);
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+input:focus,
+select:focus {
+  outline: 3px solid var(--acento);
+  outline-offset: 1px;
+}
+
+.campo small { color: var(--texto-suave); font-size: 0.82rem; }
+
+/* Selector torno / fresadora como dos botones grandes */
+.selector-maquina {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.selector-maquina label {
+  margin: 0;
+  text-align: center;
+  padding: 12px;
+  font-weight: 600;
+  border: 2px solid var(--borde);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.selector-maquina input { accent-color: var(--acento); }
+.selector-maquina label:has(input:checked) {
+  border-color: var(--acento);
+  background: var(--acento-suave);
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 12px;
+}
+
+/* En torno se ocultan los campos y resultados que solo son de fresadora */
+body[data-maquina="torno"] .solo-fresadora { display: none; }
+
+/* ===== Resultados ===== */
+.resultados h2 { margin: 0 0 8px; font-size: 1.1rem; }
+
+.lista-resultados {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.resultado {
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.resultado dt { font-size: 0.82rem; color: var(--texto-suave); }
+.resultado dd {
+  margin: 2px 0 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.resultado dd small { font-size: 0.9rem; font-weight: 400; color: var(--texto-suave); }
+
+.resultado.destacado {
+  border: 2px solid var(--acento);
+  background: var(--acento-suave);
+}
+.resultado.destacado dd { font-size: 2.2rem; }
+
+.resultado.codigo-g { grid-column: 1 / -1; }
+.codigo-g code {
+  display: inline-block;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 1.6rem;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: #1d2329;
+  color: #7CFC9A;              /* como la pantalla de un control CNC */
+}
+
+.nota,
+.aviso-rpm {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+.nota { color: var(--texto-suave); }
+.aviso-rpm { color: var(--error); font-weight: 600; }
+
+.error {
+  color: var(--error);
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+/* ===== Aviso de valores orientativos ===== */
+.advertencia {
+  background: var(--aviso);
+  border-color: var(--aviso-borde);
+  border-left-width: 6px;
+  font-size: 0.92rem;
+}
+
+/* ===== Celular angosto: una sola columna ===== */
+@media (max-width: 420px) {
+  .campos,
+  .lista-resultados { grid-template-columns: 1fr; }
+}
+
+/* ===== Pantalla ancha: formulario y resultados lado a lado ===== */
+@media (min-width: 820px) {
+  main {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .advertencia { grid-column: 1 / -1; }
+  .cabecera { padding-left: max(var(--espacio), calc((100% - 960px) / 2 + var(--espacio))); }
+}
