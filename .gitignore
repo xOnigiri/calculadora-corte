@@ -1,0 +1,20 @@
+# Python: archivos compilados y cachés
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Entornos virtuales
+.venv/
+venv/
+
+# Editores
+.vscode/
+.idea/
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Notas privadas de contexto para Claude Code (tienen datos personales; el repo será público)
+CLAUDE.md
