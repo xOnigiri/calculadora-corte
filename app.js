@@ -168,6 +168,9 @@ if (typeof document !== "undefined") {
     $("res-tiempo-min").textContent = "";
     $("res-gcode").textContent = "S— F—";
     $("aviso-rpm").hidden = true;
+    for (const id of ["barra-s", "barra-f", "barra-t"]) {
+      $(id).textContent = "—";
+    }
   }
 
   function actualizar() {
@@ -200,6 +203,11 @@ if (typeof document !== "undefined") {
     $("res-tiempo-min").textContent = `${r.t.toFixed(2)} min`;
 
     $("res-viruta").textContent = r.q === null ? "—" : r.q.toFixed(1);
+
+    // Barra fija del celular
+    $("barra-s").textContent = Math.round(r.n);
+    $("barra-f").textContent = Math.round(r.vf);
+    $("barra-t").textContent = Math.round(r.t * 60);
   }
 
   // Al cambiar de máquina se pone su avance por defecto (f y fz son cosas distintas)

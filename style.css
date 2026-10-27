@@ -211,6 +211,39 @@ body[data-maquina="torno"] .solo-fresadora { display: none; }
   font-size: 0.92rem;
 }
 
+/* ===== Barra fija abajo con S, F y t (solo cuando los resultados quedan debajo) ===== */
+.barra-fija { display: none; }
+
+@media (max-width: 819px) {
+  body { padding-bottom: 76px; }   /* espacio para que la barra no tape el final */
+
+  .barra-fija {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 10px var(--espacio);
+    background: #1d2329;
+    color: #fff;
+    border-top: 4px solid var(--acento);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.25);
+  }
+  .barra-fija div { text-align: center; line-height: 1.1; }
+  .barra-fija strong {
+    display: block;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 1.45rem;
+    color: #7CFC9A;
+    font-variant-numeric: tabular-nums;
+  }
+  .barra-etiqueta { font-size: 0.75rem; font-weight: 700; color: var(--acento); }
+  .barra-fija small { margin-left: 3px; font-size: 0.7rem; color: #c3ccd3; }
+}
+
 /* ===== Celular angosto: una sola columna ===== */
 @media (max-width: 380px) {
   .campos,
