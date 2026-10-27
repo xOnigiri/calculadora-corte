@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculadora de parámetros de corte</title>
+  <meta name="description" content="Calcula RPM, avance, tiempo por pasada y volumen de viruta para torno y fresadora.">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="cabecera">
+    <h1>Calculadora de parámetros de corte</h1>
+    <p>Torno y fresadora · RPM, avance, tiempo y viruta</p>
+  </header>
+
+  <main>
+    <!-- DATOS DE ENTRADA -->
+    <form id="formulario" class="tarjeta" novalidate>
+      <fieldset>
+        <legend>Máquina</legend>
+        <div class="selector-maquina">
+          <label><input type="radio" name="maquina" value="torno"> Torno</label>
+          <label><input type="radio" name="maquina" value="fresadora" checked> Fresadora</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Material y herramienta</legend>
+        <label for="material">Material</label>
+        <!-- Las opciones las llena app.js desde la tabla de materiales -->
+        <select id="material" name="material"></select>
+
+        <label for="herramienta">Herramienta</label>
+        <select id="herramienta" name="herramienta">
+          <option value="HSS" selected>HSS (acero rápido)</option>
+          <option value="carburo">Carburo (metal duro)</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Medidas</legend>
+        <div class="campos">
+          <div class="campo">
+            <label for="diametro" id="etiqueta-diametro">Diámetro de la fresa D [mm]</label>
+            <input type="number" id="diametro" name="diametro" value="10" min="0" step="any" inputmode="decimal">
+          </div>
+
+          <div class="campo">
+            <label for="rpm-maxima">RPM máximas de la máquina</label>
+            <input type="number" id="rpm-maxima" name="rpm-maxima" value="6000" min="0" step="any" inputmode="decimal">
+          </div>
+
+          <div class="campo">
+            <label for="avance" id="etiqueta-avance">Avance por diente fz [mm/diente]</label>
+            <input type="number" id="avance" name="avance" value="0.05" min="0" step="any" inputmode="decimal">
+            <small id="ayuda-avance">Ejemplo: 0.05</small>
+          </div>
+
+          <div class="campo solo-fresadora">
+            <label for="dientes">Número de dientes z</label>
+            <input type="number" id="dientes" name="dientes" value="4" min="1" step="1" inputmode="numeric">
+          </div>
+
+          <div class="campo">
+            <label for="longitud">Longitud de la pasada L [mm]</label>
+            <input type="number" id="longitud" name="longitud" value="120" min="0" step="any" inputmode="decimal">
+          </div>
+
+          <div class="campo solo-fresadora">
+            <label for="ap">Profundidad de corte ap [mm]</label>
+            <input type="number" id="ap" name="ap" value="2" min="0" step="any" inputmode="decimal">
+          </div>
+
+          <div class="campo solo-fresadora">
+            <label for="ae">Ancho de corte ae [mm]</label>
+            <input type="number" id="ae" name="ae" value="5" min="0" step="any" inputmode="decimal">
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- RESULTADOS -->
+    <section class="tarjeta resultados" aria-live="polite">
+      <h2>Resultados</h2>
+      <p id="error" class="error" hidden></p>
+
+      <dl class="lista-resultados">
+        <div class="resultado">
+          <dt>Velocidad de corte Vc</dt>
+          <dd><span id="res-vc">—</span> <small>m/min</small>
+            <span id="res-vc-rango" class="nota"></span></dd>
+        </div>
+
+        <div class="resultado destacado">
+          <dt>Velocidad del husillo n</dt>
+          <dd><span id="res-rpm">—</span> <small>rpm</small>
+            <span id="aviso-rpm" class="aviso-rpm" hidden></span></dd>
+        </div>
+
+        <div class="resultado destacado">
+          <dt>Velocidad de avance Vf</dt>
+          <dd><span id="res-vf">—</span> <small>mm/min</small></dd>
+        </div>
+
+        <div class="resultado codigo-g">
+          <dt>Código G</dt>
+          <dd><code id="res-gcode">S— F—</code></dd>
+        </div>
+
+        <div class="resultado">
+          <dt>Tiempo por pasada t</dt>
+          <dd><span id="res-tiempo">—</span> <small>s</small>
+            <span id="res-tiempo-min" class="nota"></span></dd>
+        </div>
+
+        <div class="resultado solo-fresadora">
+          <dt>Volumen de viruta Q</dt>
+          <dd><span id="res-viruta">—</span> <small>cm³/min</small></dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- AVISO -->
+    <aside class="tarjeta advertencia">
+      <strong>⚠ Valores orientativos.</strong>
+      Las velocidades de corte de esta app son provisionales y aún no están verificadas.
+      Antes de cortar, compáralas con el catálogo del fabricante de la herramienta y con tu
+      instructor o el maquinista responsable. La app no considera la potencia de la máquina,
+      la flexión de la herramienta, el desgaste del filo ni si es desbaste o acabado.
+    </aside>
+  </main>
+
+  <footer class="pie">
+    <p>Fórmulas: n = Vc·1000 / (π·D) · Vf = f·n (torno) · Vf = fz·z·n (fresadora) · t = L / Vf · Q = ap·ae·Vf / 1000</p>
+  </footer>
+</body>
+</html>
