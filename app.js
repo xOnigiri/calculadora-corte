@@ -19,6 +19,10 @@ const MATERIALES = {
   "fundición gris":     { HSS: [15, 25],  carburo: [80, 150] },
 };
 
+// Avance de ejemplo al elegir cada máquina: f [mm/rev] en torno, fz [mm/diente] en fresadora
+// (aproximados, igual que los ejemplos de main.py)
+const AVANCE_POR_DEFECTO = { torno: 0.15, fresadora: 0.05 };
+
 /** Punto medio del rango: un valor prudente para empezar. */
 function vcRecomendada(material, herramienta) {
   const [minimo, maximo] = MATERIALES[material][herramienta];
@@ -129,12 +133,11 @@ if (typeof document !== "undefined") {
     if (maquina === "torno") {
       $("etiqueta-diametro").textContent = "Diámetro de la pieza D [mm]";
       $("etiqueta-avance").textContent = "Avance por vuelta f [mm/rev]";
-      $("ayuda-avance").textContent = "Ejemplo: 0.15";
     } else {
       $("etiqueta-diametro").textContent = "Diámetro de la fresa D [mm]";
       $("etiqueta-avance").textContent = "Avance por diente fz [mm/diente]";
-      $("ayuda-avance").textContent = "Ejemplo: 0.05";
     }
+    $("ayuda-avance").textContent = `Ejemplo: ${AVANCE_POR_DEFECTO[maquina]}`;
   }
 
   /** Revisa que los campos visibles tengan números mayores que cero. */
@@ -199,6 +202,13 @@ if (typeof document !== "undefined") {
     $("res-viruta").textContent = r.q === null ? "—" : r.q.toFixed(1);
   }
 
+  // Al cambiar de máquina se pone su avance por defecto (f y fz son cosas distintas)
+  for (const opcion of formulario.elements.maquina) {
+    opcion.addEventListener("change", () => {
+      $("avance").value = AVANCE_POR_DEFECTO[opcion.value];
+    });
+  }
+
   // Recalcula al instante cada vez que se cambia cualquier dato
   formulario.addEventListener("input", actualizar);
   formulario.addEventListener("change", actualizar);
@@ -207,6 +217,6 @@ if (typeof document !== "undefined") {
 
 // Permite probar las fórmulas desde la terminal con Node.js (el navegador lo ignora)
 if (typeof module !== "undefined") {
-  module.exports = { MATERIALES, vcRecomendada, rpm, avanceTorno, avanceFresado,
+  module.exports = { MATERIALES, AVANCE_POR_DEFECTO, vcRecomendada, rpm, avanceTorno, avanceFresado,
     tiempoMecanizado, volumenViruta, limitarRpm, calcular };
 }
